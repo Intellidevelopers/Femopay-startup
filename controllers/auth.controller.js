@@ -327,3 +327,63 @@ export const resendOTP = async (req, res) => {
         res.status(500).json({ message: "Server error", error });
     }
 };
+
+
+
+
+export const forgotPassword = async (req, res) => {
+    try {
+      const { email } = req.body;
+  
+      if (!email) return res.status(400).json({ message: "Email is required" });
+  
+      const user = await User.findOne({ email });
+      if (!user) return res.status(404).json({ message: "User not found" });
+  
+      const otp = crypto.randomInt(100000, 999999).toString();
+      const otpExpiresAt = dayjs().add(10, "minutes").toDate();
+  
+      await OTP.findOneAndUpdate(
+        { email },
+        { otp, expiresAt: otpExpiresAt },
+        { upsert: true }
+      );
+  
+      await sendOTPEmail({ to: email, type: "forgot_password", otp, data: user });
+  
+      res.status(200).json({ message: "OTP sent to email for password reset" });
+    } catch (error) {
+      console.error("Error in forgotPassword:", error);
+      res.status(500).json({ message: "Server error", error: error.message });
+    }
+  };
+
+
+
+
+  export const resetPassword = async (req, res) => {
+    try {
+      const { email, otp, newPassword } = req.body;
+  
+      if (!email || !otp || !newPassword) {
+        return res.status(400).json({ message: "Email, OTP and new password are required" });
+      }
+  
+      const otpRecord = await OTP.findOne({ email });
+      if (!otpRecord || otpRecord.otp !== otp || new Date() > otpRecord.expiresAt) {
+        return res.status(400).json({ message: "Invalid or expired OTP" });
+      }
+  
+      const hashedPassword = await bcrypt.hash(newPassword, 10);
+      await User.findOneAndUpdate({ email }, { password: hashedPassword });
+  
+      await OTP.deleteOne({ email });
+  
+      res.status(200).json({ message: "Password reset successfully" });
+    } catch (error) {
+      console.error("Error in resetPassword:", error);
+      res.status(500).json({ message: "Server error", error: error.message });
+    }
+  };
+  
+  

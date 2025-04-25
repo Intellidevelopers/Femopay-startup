@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { onboardUser, refreshToken, resendOTP, setTransactionPin, signIn, signOut, signUp, verifyOTP, verifyTransactionPin } from "../controllers/auth.controller.js";
+import { forgotPassword, onboardUser, refreshToken, resendOTP, resetPassword, setTransactionPin, signIn, signOut, signUp, verifyOTP, verifyTransactionPin } from "../controllers/auth.controller.js";
 import authorize from "../middlewares/auth.middleware.js";
 
 
@@ -21,6 +21,10 @@ authRouter.post('/refresh-token', refreshToken);
 authRouter.post('/verify-otp', verifyOTP);
 
 authRouter.post('/resend-otp', resendOTP);
+
+authRouter.post('/send-reset-otp', forgotPassword);
+
+authRouter.post('/reset-password', resetPassword);
 
 authRouter.post('/sign-out', signOut);
 
