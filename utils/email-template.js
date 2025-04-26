@@ -2,8 +2,9 @@ export const generateOtpEmailTemplate = ({ userName, otp, requestTime }) => `
 <div style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; line-height: 1.6; color: #333; max-width: 600px; margin: 0 auto; padding: 0; background-color: #f4f7fa;">
     <table cellpadding="0" cellspacing="0" border="0" width="100%" style="background-color:rgba(238, 241, 240, 0.19); border-radius: 10px; overflow: hidden; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);">
         <tr>
-            <td style="background-color:rgb(249, 19, 68); text-align: center; padding: 20px;">
-                <h2 style="color: #ffffff;">FemoPay</h2>
+            <td style="background-color:rgb(247, 243, 243); text-align: center; padding: 20px;">
+                <img src="https://huiospay-store.s3.eu-central-1.amazonaws.com/payslate-tester/kyc-documents/2025-04-26T15%3A58%3A39.725Z-WhatsApp%20Image%202025-04-26%20at%204.49.43%20PM.jpeg" alt="FemoPay Logo" style="width: auto; height: auto; border-radius:9px;"/>
+                <p style="color:rgb(15, 6, 6); font-size: 16px;">Your Trusted Payment Solution</p>
             </td>
         </tr>
         <tr>
